@@ -15,6 +15,7 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
+from .helper import get_folders
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,10 +46,14 @@ INSTALLED_APPS = [
     
     # Third-party apps
     'rest_framework',
-
-    # Your apps
-    'api',
 ]
+
+# Dynamically add all apps in the project
+apps = get_folders(BASE_DIR)
+discluded_apps = ['backend']
+for app in apps:
+    if app not in discluded_apps:
+        INSTALLED_APPS.append(app)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
