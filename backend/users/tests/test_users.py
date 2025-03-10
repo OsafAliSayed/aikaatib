@@ -1,7 +1,9 @@
 import pytest
-from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from django.contrib.auth.models import User
+from users.models import Profile  # Adjust the import according to your app name
 
 @pytest.fixture
 def api_client():
@@ -59,3 +61,14 @@ def test_token_refresh(api_client, get_tokens):
 
     assert response.status_code == 200
     assert 'access' in response.data
+
+@pytest.mark.django_db
+def test_profile_creation():
+    user = User.objects.create_user(username='testuser', password='testpassword')
+    
+    # Check if the profile is created
+    profile = Profile.objects.get(user=user)
+    
+    assert profile is not None
+    assert profile.user == user
+    assert profile.tokens == 0.00  # Default value for funds
