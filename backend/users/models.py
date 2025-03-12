@@ -9,8 +9,8 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    tokens = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Track user funds
-
+    current_ammount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Track user funds
+    
     def __str__(self):
         return self.user.username
 
