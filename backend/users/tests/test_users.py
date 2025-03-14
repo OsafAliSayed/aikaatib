@@ -71,4 +71,4 @@ def test_profile_creation():
     
     assert profile is not None
     assert profile.user == user
-    assert profile.tokens == 0.00  # Default value for funds
+    assert profile.current_ammount == 0.00  # Default value for funds
