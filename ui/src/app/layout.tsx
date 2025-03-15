@@ -5,7 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'BlogAI - AI-Powered Blog Writing',
+  title: 'AIKaatib - AI-Powered Blog Writing',
   description: 'Transform your ideas into engaging blog posts with AI',
 };
 

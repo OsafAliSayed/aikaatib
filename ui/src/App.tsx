@@ -9,7 +9,7 @@ function App() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Bot className="h-6 w-6 text-white" />
-            <span className="text-xl font-bold text-white">BlogAI</span>
+            <span className="text-xl font-bold text-white">AIKaatib</span>
           </div>
           <button className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full hover:bg-white/20 transition">
             Get Started
@@ -140,7 +140,7 @@ function App() {
               Ready to transform your content?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of content creators who are already using BlogAI to create amazing content.
+              Join thousands of content creators who are already using AIKaatib to create amazing content.
             </p>
             <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-white/20 transition text-lg">
               Get Started Now
@@ -154,7 +154,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center space-x-2">
             <Bot className="h-6 w-6 text-gray-500" />
-            <span className="text-gray-500">© 2025 BlogAI. All rights reserved.</span>
+            <span className="text-gray-500">© 2025 AIKaatib. All rights reserved.</span>
           </div>
         </div>
       </footer>
