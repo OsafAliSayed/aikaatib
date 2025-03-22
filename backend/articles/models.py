@@ -7,7 +7,8 @@ class Article(models.Model):
     keywords = models.TextField(blank=True, null=True)
     outline = models.TextField(blank=True, null=True)
     target_audience = models.TextField(blank=True, null=True)
-    content = models.TextField()  # Generated & edited content
+    content_url = models.URLField(default="", max_length=1000)
+    content_url_expiration = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
