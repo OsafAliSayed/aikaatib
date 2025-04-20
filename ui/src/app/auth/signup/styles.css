@@ -4,7 +4,6 @@ input {
     /* glassy background */
     background-color: #333 !important;
     color: white !important;
-
 }
 
 input:focus {
@@ -13,4 +12,3 @@ input:focus {
     border: 2px solid #a855f7;
     background-color: #333;
 }
-
