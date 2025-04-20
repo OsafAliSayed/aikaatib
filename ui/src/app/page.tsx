@@ -1,4 +1,5 @@
 import { Bot, Sparkles, Zap, Target, PenTool, BarChart, Users, Check } from 'lucide-react';
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -12,10 +13,10 @@ export default function Home() {
           </div>
           <div className="flex items-center space-x-4">
             <button className="text-white hover:text-gray-300 transition">
-              Log in
+            <Link href="/auth/login">Log in</Link>
             </button>
             <button className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full hover:bg-white/20 transition">
-              Sign up
+            <Link href="/auth/signup">Sign up</Link>
             </button>
           </div>
         </nav>
@@ -27,7 +28,7 @@ export default function Home() {
         <div className="absolute inset-0 gradient-bg"></div>
 
         {/* Hero Section */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+        <div className="relative mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
           <div className="max-w-3xl">
             <h1 className="text-5xl sm:text-7xl font-bold mb-6 gradient-text">
               Write better blog posts with AI
@@ -37,7 +38,7 @@ export default function Home() {
               professional, SEO-optimized content that resonates with your audience.
             </p>
             <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-white/20 transition text-lg">
-              Get Started
+            <Link href="/auth/signup">Get Started</Link>
             </button>
 
             {/* Trusted By Section */}
@@ -60,7 +61,7 @@ export default function Home() {
                     Transform your ideas into engaging blog posts in seconds.
                   </p>
                   <button className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm">
-                    Get Started
+                  <Link href="/auth/signup">Get Started</Link>
                   </button>
                 </div>
               </div>
@@ -195,7 +196,7 @@ export default function Home() {
                     ))}
                   </ul>
                   <button className="w-full bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/20 transition">
-                    Get started
+                  <Link href="/auth/signup">Get Started</Link>
                   </button>
                 </div>
               ))}
@@ -213,7 +214,7 @@ export default function Home() {
               Join thousands of content creators who are already using AIKaatib to create amazing content.
             </p>
             <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-white/20 transition text-lg">
-              Get Started Now
+            <Link href="/auth/signup">Get Started</Link>
             </button>
           </div>
         </section>

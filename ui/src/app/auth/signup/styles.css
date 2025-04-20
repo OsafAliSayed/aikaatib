@@ -1,0 +1,16 @@
+input {
+    border: none;
+    /* border: 1px solid #444; */
+    /* glassy background */
+    background-color: #333 !important;
+    color: white !important;
+
+}
+
+input:focus {
+    outline-style: none !important;
+    box-shadow: none !important;
+    border: 2px solid #a855f7;
+    background-color: #333;
+}
+

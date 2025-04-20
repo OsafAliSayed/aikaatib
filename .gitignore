@@ -27,3 +27,6 @@ staticfiles/
 # Environment variables and secrets
 .env
 *.pem
+
+#Ignore the .next folder
+.next/
