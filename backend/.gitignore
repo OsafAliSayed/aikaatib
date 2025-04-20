@@ -1,6 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Virtual environment
 venv/
 .env
+
+# Django-related files
+db.sqlite3
+media/
+staticfiles/
 
 # Logs and temp files
 *.log
@@ -17,3 +27,6 @@ venv/
 # Environment variables and secrets
 .env
 *.pem
+
+#Ignore the .next folder
+.next/
