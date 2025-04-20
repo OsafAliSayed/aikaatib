@@ -25,7 +25,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-purple-950 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'radial-gradient(circle at center, rgba(76, 29, 149, 0.5) 0%, rgba(0, 0, 0, 1) 100%)' }}>
       <Card className="w-full max-w-md bg-black/40 backdrop-blur-xl border-purple-800/30">
         <CardHeader className="space-y-2 text-center">
           <div className="flex items-center justify-center space-x-2 text-purple-300">
