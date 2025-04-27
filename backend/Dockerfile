@@ -1,5 +1,5 @@
 # Base image
-FROM python3.13.3-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -14,4 +14,4 @@ COPY . .
 EXPOSE 8000
 
 # Command to run the application
-CMD ["python", "manage.py runserver"]
+CMD ["python", "manage.py", "runserver"]
