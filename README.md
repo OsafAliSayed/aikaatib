@@ -28,9 +28,51 @@ From here, you can run the project in three ways:
 
 ## Using Docker Compose
 
+1. Make sure you have Docker and Docker Compose installed on your machine.
+
+2. Navigate to the root directory of the project:
+
+3. Build and run the containers:
+```bash
+docker-compose up --build
+```
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+
+
 ## Using Docker
 
-## Manual Setup
+1. Make sure you have Docker installed on your machine.
+
+2. Navigate to the root directory of the project:
+
+3. Build the Docker frontend image:
+```bash
+cd frontend
+docker build -t frontend .
+```
+
+4. Build the Docker backend image:
+```bash
+cd backend
+docker build -t backend .
+```
+
+5. Create a network for the containers:
+```bash
+docker network create aikaatib-network
+```
+
+
+5. Run the Docker containers:
+```bash
+docker run -d --name backend --network aikaatib-network -p 8000:8000 backend
+docker run -d --name frontend --network aikaatib-network -p 3000:3000 frontend
+```
+
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Manual Stup
 
 ### Frontend Setup
 
