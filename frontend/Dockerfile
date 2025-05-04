@@ -1,9 +1,9 @@
-FROM node:20.11.0
+FROM node:20.11.0-slim
 
 WORKDIR /app
 
 # Install the dependencies
-COPY package.json .
+COPY package*.json .
 
 RUN npm install
 
