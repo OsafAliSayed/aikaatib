@@ -48,9 +48,9 @@ INSTALLED_APPS = [
     # rest_framework
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     
     # custom apps
-    'api',
     'users',
     'articles',
     
