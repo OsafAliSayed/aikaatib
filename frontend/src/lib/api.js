@@ -1,7 +1,7 @@
 const API_BASE = "http://localhost:8000/api";
 
 export async function login({ username, password }) {
-  const res = await fetch(`${API_BASE}/auth/login`, {
+  const res = await fetch(`${API_BASE}/auth/login/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export async function login({ username, password }) {
 }
 
 export async function signup({ username, email, password }) {
-  const res = await fetch(`${API_BASE}/auth/register`, {
+  const res = await fetch(`${API_BASE}/auth/register/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
