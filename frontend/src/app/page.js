@@ -53,7 +53,9 @@ export default function Home() {
             >
               Read our docs
             </a>
-            <Button>This is ShadCn Button</Button>
+            <Link href="/signin">
+              <Button>Go to Sign In</Button>
+            </Link>
           </div>
         </main>
         <footer className="row-start-2 flex gap-[24px] flex-wrap items-center justify-center">
