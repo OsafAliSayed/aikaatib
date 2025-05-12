@@ -1,8 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 export default function DashboardPage() {
+    const router = useRouter()
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-white">
