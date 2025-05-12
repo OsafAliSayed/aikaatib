@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Navbar from "../components/Navbar";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -52,6 +53,7 @@ export default function Home() {
             >
               Read our docs
             </a>
+            <Button>This is ShadCn Button</Button>
           </div>
         </main>
         <footer className="row-start-2 flex gap-[24px] flex-wrap items-center justify-center">
