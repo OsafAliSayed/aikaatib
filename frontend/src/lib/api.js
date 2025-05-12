@@ -36,6 +36,26 @@ export async function signup({ username, email, password }) {
     const errorData = await res.json();
     throw new Error(errorData.message || "Signup failed");
   }
+  return await res.json();
+}
+
+export async function generateBlog(title) {
+  const { getTokens } = require('./auth');
+  const tokens = getTokens();
+  
+  const res = await fetch(`${API_BASE}/articles/generate/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${tokens.access}`,
+    },
+    body: JSON.stringify({ title }),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "Failed to generate blog");
+  }
 
   return await res.json();
 }
