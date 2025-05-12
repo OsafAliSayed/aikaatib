@@ -2,15 +2,16 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { login } from "@/lib/api"
+import { signup } from "@/lib/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const router = useRouter()
@@ -20,21 +21,19 @@ export default function SignInPage() {
     setError("")
 
     try {
-      const data = await login({ username, password })
-      console.log("Login successful:", data)
-
-      router.push("/dashboard")
+      const data = await signup({ username, email, password })
+      console.log("Signup successful:", data)
+      router.push("/signin")
     } catch (err) {
       setError(err.message)
     }
   }
 
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">Sign In</CardTitle>
+          <CardTitle className="text-center text-2xl">Sign Up</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -42,9 +41,18 @@ export default function SignInPage() {
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
-                type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -59,14 +67,16 @@ export default function SignInPage() {
               />
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            <Button type="submit" className="w-full">Sign In</Button>
+            <Button type="submit" className="w-full">Sign Up</Button>
           </form>
+
           <p className="text-sm text-center mt-4">
-            Don't have an account?{" "}
-            <Link href="/signup" className="text-blue-600 hover:underline">
-                Sign Up
+            Already have an account?{" "}
+            <Link href="/signin" className="text-blue-600 hover:underline">
+                Sign In
             </Link>
           </p>
+
         </CardContent>
       </Card>
     </div>
