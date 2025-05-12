@@ -39,6 +39,31 @@ export async function signup({ username, email, password }) {
   return await res.json();
 }
 
+export async function logout() {
+  const { getTokens, removeTokens } = require('./auth');
+  const tokens = getTokens();
+  try {
+    const res = await fetch(`${API_BASE}/auth/logout/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${tokens?.access}`,
+      },
+      body: JSON.stringify({
+        refresh: tokens?.refresh
+      }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.detail || "Logout failed");
+    }
+  } finally {
+    // Always remove tokens, even if the API call fails
+    removeTokens();
+  }
+}
+
 export async function generateBlog(title) {
   const { getTokens } = require('./auth');
   const tokens = getTokens();

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { isAuthenticated, removeTokens } from '@/lib/auth';
+import { isAuthenticated } from '@/lib/auth';
+import { logout } from "@/lib/api";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,11 +26,16 @@ export default function Navbar() {
       return () => clearInterval(interval);
     }
   }, []);
-
-  const handleLogout = () => {
-    removeTokens();
-    setIsLoggedIn(false);
-    router.push("/signin");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setIsLoggedIn(false);
+      router.push("/signin");
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Still redirect to signin page even if the API call fails
+      router.push("/signin");
+    }
   };
 
   return (

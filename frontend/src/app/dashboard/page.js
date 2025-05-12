@@ -1,16 +1,9 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
 
 export default function DashboardPage() {
-    const router = useRouter()
 
-    const handleSignOut = () => {
-        // Clear tokens or auth data here if needed
-
-        router.push("/signin")
-    }
     return (
         <div className="min-h-screen flex items-center justify-center bg-white">
             <div className="text-center space-y-4">
@@ -22,12 +15,6 @@ export default function DashboardPage() {
                         className="bg-purple-600 hover:bg-purple-700"
                     >
                         Generate Blog
-                    </Button>
-                    <Button 
-                        onClick={handleSignOut}
-                        variant="outline"
-                    >
-                        Sign Out
                     </Button>
                 </div>
             </div>
