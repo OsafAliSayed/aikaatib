@@ -11,10 +11,16 @@ export async function login({ username, password }) {
 
   if (!res.ok) {
     const errorData = await res.json();
-    throw new Error(errorData.message || "Login failed");
+    throw new Error(errorData.detail || "Login failed");
+  }
+  const data = await res.json();
+  // Store tokens
+  if (data.access && data.refresh) {
+    const { setTokens } = require('./auth');
+    setTokens(data.access, data.refresh);
   }
 
-  return await res.json();
+  return data;
 }
 
 export async function signup({ username, email, password }) {

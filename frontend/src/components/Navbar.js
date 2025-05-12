@@ -2,26 +2,34 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import { isAuthenticated, removeTokens } from '@/lib/auth';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname;
       setActiveTab(path === "/" ? "home" : path.substring(1));
+      const checkAuth = () => {
+        setIsLoggedIn(isAuthenticated());
+      };
+      checkAuth();
 
-      const token = localStorage.getItem("token");
-      setIsLoggedIn(!!token);
+      // Set up an interval to check auth status
+      const interval = setInterval(checkAuth, 1000);
+
+      return () => clearInterval(interval);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    removeTokens();
     setIsLoggedIn(false);
-    window.location.href = "/signin";
+    router.push("/signin");
   };
 
   return (
