@@ -2,26 +2,40 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import { isAuthenticated } from '@/lib/auth';
+import { logout } from "@/lib/api";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const path = window.location.pathname;
       setActiveTab(path === "/" ? "home" : path.substring(1));
+      const checkAuth = () => {
+        setIsLoggedIn(isAuthenticated());
+      };
+      checkAuth();
 
-      const token = localStorage.getItem("token");
-      setIsLoggedIn(!!token);
+      // Set up an interval to check auth status
+      const interval = setInterval(checkAuth, 1000);
+
+      return () => clearInterval(interval);
     }
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    window.location.href = "/signin";
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setIsLoggedIn(false);
+      router.push("/signin");
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Still redirect to signin page even if the API call fails
+      router.push("/signin");
+    }
   };
 
   return (

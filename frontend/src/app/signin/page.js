@@ -13,19 +13,24 @@ export default function SignInPage() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
-    const router = useRouter()
-
+    const router = useRouter()      
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError("")
 
         try {
             const data = await login({ username, password })
-            console.log("Login successful:", data)
-
-            router.push("/dashboard")
+            
+            if (data.access && data.refresh) {
+                // Small delay to ensure tokens are stored before navigation
+                setTimeout(() => {
+                    router.push("/dashboard")
+                }, 100)
+            } else {
+                setError("Invalid credentials")
+            }
         } catch (err) {
-            setError(err.message)
+            setError(err.message || "An error occurred during login")
         }
     }
 
