@@ -125,13 +125,13 @@ export default function PricingSection() {
                 
                 <div className="mb-6">
                   <span className="text-4xl font-bold">
-                    ${annual ? plan.annualPrice / 12 : plan.monthlyPrice}
+                    ${annual ? (plan.annualPrice / 12).toFixed(2) : (plan.monthlyPrice).toFixed(2)}
                   </span>
                   <span className="text-muted-foreground">/month</span>
                   
                   {annual && (
                     <div className="text-sm text-muted-foreground mt-1">
-                      Billed annually (${plan.annualPrice})
+                      Billed annually (${plan.annualPrice.toFixed(2)})
                     </div>
                   )}
                 </div>
