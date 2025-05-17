@@ -1,11 +1,11 @@
-import Navbar from '@/components/navbar';
-import HeroSection from '@/components/hero-section';
-import FeaturesSection from '@/components/features-section';
-import HowItWorks from '@/components/how-it-works';
-import Testimonials from '@/components/testimonials';
-import PricingSection from '@/components/pricing-section';
-import Cta from '@/components/cta';
-import Footer from '@/components/footer';
+import Navbar from '@/components/common/navbar';
+import HeroSection from '@/components/page/hero-section';
+import FeaturesSection from '@/components/page/features-section';
+import HowItWorks from '@/components/page/how-it-works';
+import Testimonials from '@/components/page/testimonials';
+import PricingSection from '@/components/page/pricing-section';
+import Cta from '@/components/page/cta';
+import Footer from '@/components/page/footer';
 
 export default function Home() {
   return (
