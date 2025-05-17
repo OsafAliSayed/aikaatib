@@ -1,6 +1,6 @@
 import Navbar from '@/components/navbar';
 import HeroSection from '@/components/hero-section';
-// import FeaturesSection from '@/components/features-section';
+import FeaturesSection from '@/components/features-section';
 // import HowItWorks from '@/components/how-it-works';
 // import Testimonials from '@/components/testimonials';
 // import PricingSection from '@/components/pricing-section';
@@ -13,8 +13,8 @@ export default function Home() {
       <div className="relative z-10">
         <Navbar />
         <HeroSection />
-        {/* <FeaturesSection />
-        <HowItWorks />
+        <FeaturesSection />
+        {/* <HowItWorks />
         <Testimonials />
         <PricingSection />
         <Cta />
