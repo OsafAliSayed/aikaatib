@@ -1,20 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { SendIcon, Loader2 } from "lucide-react";
+import { SendIcon, Loader2, FileIcon } from "lucide-react";
+import { generateBlog } from "@/lib/api";
+import ReactMarkdown from "react-markdown";
 
 export function ChatArea() {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingMarkdown, setIsFetchingMarkdown] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
       content: "Hi, I'm AI Kaatib. How can I help you create your blog today?"
     }
   ]);
+  const [currentArticle, setCurrentArticle] = useState(null);  // Function to fetch markdown content from URL
+  const fetchMarkdownContent = async (url) => {
+    if (!url) return null;
+    
+    setIsFetchingMarkdown(true);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch markdown: ${response.status}`);
+      }
+      const markdownText = await response.text();
+      return markdownText;
+    } catch (error) {
+      console.error("Error fetching markdown:", error);
+      return null;
+    } finally {
+      setIsFetchingMarkdown(false);
+    }
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!inputValue.trim()) return;
@@ -30,22 +52,65 @@ export function ChatArea() {
     setInputValue("");
     setIsLoading(true);
     
-    // Simulate AI response (replace with actual API call)
-    setTimeout(() => {
+    try {
+      // Make the actual API call to generate blog content
+      const article = await generateBlog(inputValue);
+      setCurrentArticle(article);
+      
+      // First add a message that the blog is being generated
+      const responseMessages = [
+        ...newMessages,
+        { 
+          role: "assistant", 
+          content: "I've generated a blog post based on your request. Fetching the content..."
+        }
+      ];
+      setMessages(responseMessages);
+      
+      // Fetch the markdown content
+      const markdownContent = await fetchMarkdownContent(article.content_url);
+      
+      if (markdownContent) {
+        // Update the message with the fetched markdown
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: "I've generated your blog post. Here it is:",
+            markdown: markdownContent,
+            articleId: article.id,
+            title: article.title
+          }
+        ]);
+      } else {
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: "I've generated your blog post but couldn't fetch the content. You can access it from the sidebar.",
+            articleId: article.id,
+            title: article.title
+          }
+        ]);
+      }
+    } catch (error) {
+      // Handle any errors
       setMessages([
         ...newMessages,
         { 
           role: "assistant", 
-          content: "Thank you for your message. I'm a demo version of AI Kaatib. In the full version, I would generate blog content based on your request."
+          content: `Sorry, there was an error generating your blog content: ${error.message || "Unknown error"}`
         }
       ]);
+      console.error("Error generating blog:", error);
+    } finally {
+      // Stop loading state
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Messages area */}
+    <div className="flex flex-col h-full">      {/* Messages area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         {messages.map((message, index) => (
           <div 
@@ -53,23 +118,52 @@ export function ChatArea() {
             className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div 
-              className={`max-w-[80%] p-4 rounded-lg ${
+              className={`max-w-[90%] p-4 rounded-lg ${
                 message.role === "user" 
                   ? "bg-purple-600 text-white" 
                   : "bg-gray-800 text-white"
               }`}
             >
               {message.content}
+              
+              {/* Render markdown if available */}
+              {message.markdown && (
+                <div className="mt-4 border-t border-gray-700 pt-4">
+                  <div className="mb-2 flex items-center">
+                    <FileIcon className="h-4 w-4 mr-2" />
+                    <span className="font-semibold">{message.title || "Generated Blog"}</span>
+                  </div>
+                  <div className="prose prose-invert max-w-none">
+                    <ReactMarkdown>{message.markdown}</ReactMarkdown>
+                  </div>
+                </div>
+              )}
+              
+              {/* Show article ID if available but no markdown */}
+              {message.articleId && !message.markdown && (
+                <div className="mt-2 text-sm opacity-75">
+                  Article ID: {message.articleId}
+                </div>
+              )}
             </div>
           </div>
         ))}
         
-        {/* Loading indicator */}
+        {/* Loading indicators */}
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-gray-800 p-4 rounded-lg text-white flex items-center">
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              AI is thinking...
+              AI is generating your blog...
+            </div>
+          </div>
+        )}
+        
+        {isFetchingMarkdown && (
+          <div className="flex justify-start">
+            <div className="bg-gray-800 p-4 rounded-lg text-white flex items-center">
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              Fetching markdown content...
             </div>
           </div>
         )}
