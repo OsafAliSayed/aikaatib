@@ -84,3 +84,24 @@ export async function generateBlog(title) {
 
   return await res.json();
 }
+
+export async function fetchAllArticles() {
+  const { getTokens } = require('./auth');
+  const tokens = getTokens();
+  
+  const res = await fetch(`${API_BASE}/articles/`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${tokens?.access}`,
+    },
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "Failed to fetch articles");
+  }
+
+  return await res.json();
+}
+
+

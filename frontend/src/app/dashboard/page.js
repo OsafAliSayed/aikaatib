@@ -1,25 +1,21 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
+import { isAuthenticated } from "@/lib/auth"
 
 export default function DashboardPage() {
     const router = useRouter()
 
+    // Double check authentication on client side
+    useEffect(() => {
+        if (!isAuthenticated()) {
+            router.push("/signin")
+        }
+    }, [router])
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-white">
-            <div className="text-center space-y-4">
-                <h1 className="text-3xl font-bold">Welcome to AI Kaatib</h1>
-                <p className="text-gray-600">You’re successfully signed in.</p>
-                <div className="flex flex-col gap-4">
-                    <Button 
-                        onClick={() => router.push('/generate-blog')}
-                        className="bg-purple-600 hover:bg-purple-700"
-                    >
-                        Generate Blog
-                    </Button>
-                </div>
-            </div>
-        </div>
+        <DashboardLayout></DashboardLayout>
     )
 }

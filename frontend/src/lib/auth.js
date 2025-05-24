@@ -1,7 +1,11 @@
 const TOKEN_KEY = 'auth_tokens';
 
 export function setTokens(access, refresh) {
+  // Store in localStorage for client-side access
   localStorage.setItem(TOKEN_KEY, JSON.stringify({ access, refresh }));
+  
+  // Store in cookies for middleware access (will be sent with every request)
+  document.cookie = `${TOKEN_KEY}=${JSON.stringify({ access, refresh })}; path=/; max-age=604800; SameSite=Lax`;
 }
 
 export function getTokens() {
@@ -10,7 +14,11 @@ export function getTokens() {
 }
 
 export function removeTokens() {
+  // Remove from localStorage
   localStorage.removeItem(TOKEN_KEY);
+  
+  // Remove from cookies
+  document.cookie = `${TOKEN_KEY}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax`;
 }
 
 export function isAuthenticated() {

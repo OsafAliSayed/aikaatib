@@ -23,7 +23,7 @@ class ArticleAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        articles = Article.objects.filter(user=request.user)
+        articles = Article.objects.filter(user=request.user).order_by('-created_at')
         serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -147,7 +147,8 @@ class GenerateArticleView(APIView):
                 keywords=keywords,
                 outline=outline,
                 target_audience=target_audience,
-                content_url=content_url
+                content_url=content_url,
+                content_url_expiration=timezone.now() + timedelta(seconds=3600)
             )
 
             # Return the created article data
