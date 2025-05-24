@@ -1,0 +1,78 @@
+/* Custom styles for MDX Editor */
+.mdx-editor-custom {
+    width: 100%;
+    height: 100%;
+}
+
+/* Heading Styles */
+.mdx-editor-custom h1 {
+    font-size: 2em !important;
+    font-weight: 700 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+    color: #fdfdfd !important;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.25em;
+}
+
+.mdx-editor-custom h2 {
+    font-size: 1.5em !important;
+    font-weight: 700 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.2em;
+}
+
+.mdx-editor-custom h3 {
+    font-size: 1.25em !important;
+    font-weight: 600 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+    color: #ffffff !important;
+}
+
+.mdx-editor-custom h4 {
+    font-size: 1.125em !important;
+    font-weight: 600 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+    color: #ffffff !important;
+}
+
+.mdx-editor-custom h5 {
+    font-size: 1em !important;
+    font-weight: 600 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+    color: #ffffff !important;
+}
+
+.mdx-editor-custom h6 {
+    font-size: 0.875em !important;
+    font-weight: 600 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+    color: #ffffff !important;
+}
+
+/* Ensure paragraphs look different from headings */
+.mdx-editor-custom p {
+    font-size: 1em !important;
+    font-weight: 400 !important;
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    color: #f8f8f8 !important;
+}
+
+/* Enhanced styling for the editor content area */
+.mdx-editor-custom .prose {
+    max-width: none !important;
+}
+
+/* Ensure markdown syntaxes like # are properly processed */
+.mdx-editor-custom [data-lexical-editor="true"] {
+    min-height: 400px;
+}
+
