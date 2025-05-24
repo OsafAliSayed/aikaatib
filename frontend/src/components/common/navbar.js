@@ -24,9 +24,8 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-background/80 backdrop-blur-lg border-b border-border shadow-sm' : 'bg-transparent'
-    }`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-background/80 backdrop-blur-lg border-b border-border shadow-sm' : 'bg-transparent'
+      }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center gap-2">
@@ -35,11 +34,11 @@ export default function Navbar() {
               AIKaatib
             </span>
           </div>
-          
+
           <nav className="hidden md:flex space-x-8">
             {['Features', 'How It Works', 'Pricing', 'Testimonials'].map(item => (
-              <a 
-                key={item} 
+              <a
+                key={item}
                 href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
@@ -47,14 +46,22 @@ export default function Navbar() {
               </a>
             ))}
           </nav>
-          
-          <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost">Log in</Button>
-            <Button variant="glow">Try for free</Button>
+          <div className="flex items-center gap-4">
+
+            <div className="hidden md:flex items-center gap-4">
+              <a href="/signin">
+                <Button variant="ghost">Sign in</Button>
+              </a>
+            </div>
+            <div className="hidden md:flex items-center  gap-4">
+              <a href="/signup">
+                <Button variant="outline">Sign up</Button>
+              </a>
+            </div>
           </div>
-          
-          <button 
-            className="md:hidden" 
+
+          <button
+            className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -65,24 +72,28 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-lg border-b border-border">
           <div className="px-4 py-6 space-y-4">
             {['Features', 'How It Works', 'Pricing', 'Testimonials'].map(item => (
-              <a 
-                key={item} 
+              <a
+                key={item}
                 href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                className="block py-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="block py-2 text-muted-foreground hover:text-foreground transition-colors text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item}
               </a>
             ))}
             <div className="pt-4 flex flex-col gap-2">
-              <Button variant="outline" className="w-full">Log in</Button>
-              <Button variant="glow" className="w-full">Try for free</Button>
+              <a href="/signin">
+                <Button variant="outline" className="w-full">Sign in</Button>
+              </a>
+              <a href="/signup">
+                <Button variant="ghost" className="w-full">Sign up</Button>
+              </a>
             </div>
           </div>
         </div>
