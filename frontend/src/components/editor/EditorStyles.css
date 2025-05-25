@@ -135,7 +135,35 @@
     justify-content: center !important;
 }
 
-/* placeholder styles */
 
+.editor-container {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; /* Adjust this value based on your needs */
+}
 
+.editor-content {
+    height: inherit;
+    overflow-y: auto;
+}
 
+/* Fix toolbar height and visibility */
+.editor-toolbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    min-height: 40px !important; /* Enforce minimum height */
+    height: 40px !important; /* Set fixed height */
+    flex-shrink: 0 !important; /* Prevent toolbar from shrinking */
+    background-color: inherit !important; /* Ensure background is preserved */
+    display: flex !important;
+    align-items: center !important;
+    padding: 4px 8px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important; /* Add subtle border */
+}
+
+.editor-toolbar > * {
+    flex-shrink: 0;
+    margin: 0 2px;
+}

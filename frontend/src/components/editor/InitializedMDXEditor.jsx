@@ -40,12 +40,12 @@ const RichTextEditor = React.memo(function RichTextEditor({ markdown, onChange }
 
     return (
         <div
-            className="h-full min-h-[500px] w-full p-4"
+            className="h-full w-full p-4 editor-container"
         >
             <MDXEditor
                 markdown={safeMarkdown}
                 onChange={onChange}
-                contentEditableClassName="min-h-[400px] h-full prose prose-slate prose-headings:font-bold prose-headings:text-gray-900 max-w-none"
+                contentEditableClassName="h-full prose prose-slate prose-headings:font-bold prose-headings:text-gray-900 max-w-none"
                 plugins={[                    // Only include plugins you actively need
                     frontmatterPlugin(),
                     directivesPlugin({
@@ -61,13 +61,13 @@ const RichTextEditor = React.memo(function RichTextEditor({ markdown, onChange }
                     codeBlockPlugin({
                         defaultCodeBlockLanguage: 'text',
                         // Add support for additional languages
-                        codeBlockLanguages: { 
-                            js: 'JavaScript', 
-                            ts: 'TypeScript', 
-                            jsx: 'JSX', 
+                        codeBlockLanguages: {
+                            js: 'JavaScript',
+                            ts: 'TypeScript',
+                            jsx: 'JSX',
                             tsx: 'TSX',
-                            py: 'Python', 
-                            html: 'HTML', 
+                            py: 'Python',
+                            html: 'HTML',
                             css: 'CSS',
                             json: 'JSON',
                             md: 'Markdown',
@@ -76,30 +76,32 @@ const RichTextEditor = React.memo(function RichTextEditor({ markdown, onChange }
                             text: 'Plain Text'
                         }
                     }),
-                    codeMirrorPlugin({ 
-                        codeBlockLanguages: { 
-                            js: 'JavaScript', 
-                            ts: 'TypeScript', 
-                            jsx: 'JSX', 
+                    codeMirrorPlugin({
+                        codeBlockLanguages: {
+                            js: 'JavaScript',
+                            ts: 'TypeScript',
+                            jsx: 'JSX',
                             tsx: 'TSX',
-                            py: 'Python', 
-                            html: 'HTML', 
+                            py: 'Python',
+                            html: 'HTML',
                             css: 'CSS',
                             json: 'JSON',
                             md: 'Markdown',
                             yaml: 'YAML',
                             bash: 'Bash',
                             text: 'Plain Text'
-                        } 
+                        }
                     }),
                     imagePlugin(),
-                    tablePlugin(),
+                    tablePlugin(), 
                     toolbarPlugin({
                         toolbarContents: () => (
-                            <div className="flex flex-row flex-wrap items-center gap-2">
+                            <div className="flex flex-row flex-wrap items-center editor-toolbar bg-inherit">
                                 <UndoRedo />
                                 <BoldItalicUnderlineToggles />
-                                <BlockTypeSelect />
+                                <div className='custom-block-type-select'>
+                                    <BlockTypeSelect />
+                                </div>
                                 <CodeToggle />
                                 <CreateLink />
                                 <InsertImage />
@@ -150,7 +152,7 @@ const RichTextEditor = React.memo(function RichTextEditor({ markdown, onChange }
                         },
                         shortcuts: ['bulletListRule', 'numberedListRule', 'headingRule', 'blockquoteRule', 'codeBlockRule']
                     }),
-                   
+
                 ]}
                 suppressHtmlProcessing={false}
                 contentEditable={true}

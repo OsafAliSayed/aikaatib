@@ -47,7 +47,9 @@ def upload_markdown(file_name, user_id, content):
     existing_files = [file['name'] for file in file_list]
 
     if file_name in existing_files:
-        raise Exception("File with the same name already exists")
+        # If the file already exists, delete it first
+        delete_markdown(file_path)
+        print(f"File {file_name} already exists. Deleting the old file before uploading the new one.")
 
     # Upload file
     response = supabase.storage.from_(bucket_name).upload(

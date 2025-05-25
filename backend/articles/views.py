@@ -73,7 +73,7 @@ class ArticleDetailAPIView(APIView):
             
             # make file path
             file_path = f"{bucket_name}/{user_id}/{file_name}"
-            article.content_url = get_signed_url(article.content_url)
+            article.content_url = get_signed_url(file_path)
             article.content_url_expiration = timezone.now() + timedelta(seconds=3600)
             article.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -82,6 +82,21 @@ class ArticleDetailAPIView(APIView):
         article = get_object_or_404(Article, id=id, user=request.user)
         serializer = ArticleSerializer(article, data=request.data)
         if serializer.is_valid():
+            # if content is updated, upload new markdown file
+            if 'content' in request.data:
+                content = request.data['content']
+                
+                user_obj = UserSerializer(request.user).data
+                try:
+                    content_url = upload_markdown(serializer.validated_data['title'], user_obj['id'], content)
+                except Exception as e:
+                    return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                
+                # set content_url
+                serializer.validated_data['content_url'] = content_url
+                
+                # set expiration time
+                expires_in = 3600
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

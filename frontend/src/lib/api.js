@@ -20,6 +20,20 @@ export async function login({ username, password }) {
     setTokens(data.access, data.refresh);
   }
 
+  // get user info
+  const userRes = await fetch(`${API_BASE}/user/`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${data.access}`,
+    }
+  }).then(response => response.json())
+  .then(data => {
+    // Store user info in localStorage
+    localStorage.setItem('user', JSON.stringify(data));
+  });
+  // store user info in localStorage
+
+
   return data;
 }
 
@@ -67,7 +81,7 @@ export async function logout() {
 export async function generateBlog(title) {
   const { getTokens } = require('./auth');
   const tokens = getTokens();
-  
+
   const res = await fetch(`${API_BASE}/articles/generate/`, {
     method: "POST",
     headers: {
@@ -88,7 +102,7 @@ export async function generateBlog(title) {
 export async function fetchAllArticles() {
   const { getTokens } = require('./auth');
   const tokens = getTokens();
-  
+
   const res = await fetch(`${API_BASE}/articles/`, {
     method: "GET",
     headers: {
@@ -99,6 +113,66 @@ export async function fetchAllArticles() {
   if (!res.ok) {
     const errorData = await res.json();
     throw new Error(errorData.detail || "Failed to fetch articles");
+  }
+
+  return await res.json();
+}
+
+export async function fetchArticleById(id) {
+  const { getTokens } = require('./auth');
+  const tokens = getTokens();
+
+  const res = await fetch(`${API_BASE}/articles/${id}/`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${tokens?.access}`,
+    },
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "Failed to fetch article");
+  }
+
+  return await res.json();
+}
+
+export async function fetchArticleContent(contentUrl) {
+  if (!contentUrl) {
+    throw new Error("Content URL is required");
+  }
+
+  const res = await fetch(contentUrl);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch article content");
+  }
+
+  return await res.text();
+}
+
+export async function saveArticleContent(id, title, content) {
+  const { getTokens } = require('./auth');
+  const tokens = getTokens();
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("user id", user.id)
+  const res = await fetch(`${API_BASE}/articles/${id}/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${tokens?.access}`,
+    },
+    body: JSON.stringify({
+      "user": user?.id, // Fallback to null if user ID is not available
+      "title": title,
+      "content": content,
+      "keywords": ""
+    })
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "Failed to save article content");
   }
 
   return await res.json();

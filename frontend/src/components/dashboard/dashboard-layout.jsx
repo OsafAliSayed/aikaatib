@@ -18,7 +18,7 @@ export function DashboardLayout({ children }) {
       {/* Profile header at top */}
       <ProfileHeader />
       
-      {/* Main content area */}
+      {/* Main content area */}      
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         {showSidebar && (
@@ -28,7 +28,7 @@ export function DashboardLayout({ children }) {
         )}
         
         {/* Main content */}
-        <div className="flex-1 overflow-hidden bg-gray-950">
+        <div className="flex w-full  bg-gray-950">
           <ChatArea />
         </div>
       </div>
