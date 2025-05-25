@@ -13,7 +13,6 @@ import {
     codeMirrorPlugin,
     imagePlugin,
     tablePlugin,
-    directives,
     directivesPlugin,
     thematicBreakPlugin,
     AdmonitionDirectiveDescriptor,
@@ -24,15 +23,20 @@ import {
     CreateLink,
     InsertImage,
     InsertTable,
-    diffSourcePlugin,
-    frontmatterPlugin
+    frontmatterPlugin,
+    ListsToggle,
+    InsertCodeBlock,
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
 import './EditorStyles.css';
 
-export default function RichTextEditor({ markdown, onChange }) {
+// Using React.memo to prevent unnecessary re-renders
+const RichTextEditor = React.memo(function RichTextEditor({ markdown, onChange }) {
     // Ensure markdown is never undefined to prevent "trim of undefined" error
     const safeMarkdown = markdown || '';
+
+    // For better performance, consider using React.lazy for MDXEditor in complex apps
+    // const LazyMDXEditor = React.lazy(() => import('@mdxeditor/editor').then(mod => ({ default: mod.MDXEditor })))
 
     return (
         <div
@@ -42,13 +46,54 @@ export default function RichTextEditor({ markdown, onChange }) {
                 markdown={safeMarkdown}
                 onChange={onChange}
                 contentEditableClassName="min-h-[400px] h-full prose prose-slate prose-headings:font-bold prose-headings:text-gray-900 max-w-none"
-                plugins={[
+                plugins={[                    // Only include plugins you actively need
                     frontmatterPlugin(),
-                    diffSourcePlugin(),
                     directivesPlugin({
                         directiveDescriptors: [AdmonitionDirectiveDescriptor]
                     }),
                     thematicBreakPlugin(),
+                    listsPlugin({
+                        enableOrderedList: true,
+                        enableUnorderedList: true,
+                        enableCheckedList: true
+                    }),
+                    linkPlugin(),
+                    codeBlockPlugin({
+                        defaultCodeBlockLanguage: 'text',
+                        // Add support for additional languages
+                        codeBlockLanguages: { 
+                            js: 'JavaScript', 
+                            ts: 'TypeScript', 
+                            jsx: 'JSX', 
+                            tsx: 'TSX',
+                            py: 'Python', 
+                            html: 'HTML', 
+                            css: 'CSS',
+                            json: 'JSON',
+                            md: 'Markdown',
+                            yaml: 'YAML',
+                            bash: 'Bash',
+                            text: 'Plain Text'
+                        }
+                    }),
+                    codeMirrorPlugin({ 
+                        codeBlockLanguages: { 
+                            js: 'JavaScript', 
+                            ts: 'TypeScript', 
+                            jsx: 'JSX', 
+                            tsx: 'TSX',
+                            py: 'Python', 
+                            html: 'HTML', 
+                            css: 'CSS',
+                            json: 'JSON',
+                            md: 'Markdown',
+                            yaml: 'YAML',
+                            bash: 'Bash',
+                            text: 'Plain Text'
+                        } 
+                    }),
+                    imagePlugin(),
+                    tablePlugin(),
                     toolbarPlugin({
                         toolbarContents: () => (
                             <div className="flex flex-row flex-wrap items-center gap-2">
@@ -59,37 +104,62 @@ export default function RichTextEditor({ markdown, onChange }) {
                                 <CreateLink />
                                 <InsertImage />
                                 <InsertTable />
+                                <ListsToggle />
+                                <InsertCodeBlock />
                             </div>
                         )
                     }),
-                    listsPlugin(),
                     quotePlugin(),
-                    headingsPlugin({ 
+                    headingsPlugin({
                         allowedHeadingLevels: [1, 2, 3, 4, 5, 6],
                         enableHeadingID: true
                     }),
-                    markdownShortcutPlugin({ 
+                    markdownShortcutPlugin({
                         transformers: [
                             { shortcut: '#', shouldUseSnippet: true },
                             { shortcut: '##', shouldUseSnippet: true },
                             { shortcut: '###', shouldUseSnippet: true },
                             { shortcut: '####', shouldUseSnippet: true },
                             { shortcut: '#####', shouldUseSnippet: true },
-                            { shortcut: '######', shouldUseSnippet: true }
+                            { shortcut: '######', shouldUseSnippet: true },
+                            { shortcut: '-', shouldUseSnippet: true }, // For bullet lists
+                            { shortcut: '1.', shouldUseSnippet: true }, // For numbered lists
+                            { shortcut: '>', shouldUseSnippet: true }, // For blockquotes
+                            { shortcut: '```', shouldUseSnippet: true }, // For code blocks
                         ],
-                        shortcuts: ['bulletListRule', 'headingRule', 'blockquoteRule', 'codeBlockRule'] 
+                        transformersByType: {
+                            block: [
+                                {
+                                    type: 'bulletList',
+                                    match: ['- ', '* '],
+                                    preFormat: ['listItemPreFormat'],
+                                    format: ['bulletListFormat']
+                                },
+                                {
+                                    type: 'numberedList',
+                                    match: /^(\d+)\.\s/,
+                                    preFormat: ['listItemPreFormat'],
+                                    format: ['numberedListFormat']
+                                },
+                                {
+                                    type: 'codeBlock',
+                                    match: '```',
+                                    format: ['codeBlockFormat']
+                                }
+                            ]
+                        },
+                        shortcuts: ['bulletListRule', 'numberedListRule', 'headingRule', 'blockquoteRule', 'codeBlockRule']
                     }),
-                    linkPlugin(),
-                    codeBlockPlugin(),
-                    codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', ts: 'TypeScript', py: 'Python', jsx: 'JSX', html: 'HTML', css: 'CSS' } }),
-                    imagePlugin(),
-                    tablePlugin()
+                   
                 ]}
                 suppressHtmlProcessing={false}
                 contentEditable={true}
                 autoFocus={true}
                 className="mdx-editor-custom border-none"
+                placeholder="Start writing your blog post here..."
             />
         </div>
     );
-}
+});
+
+export default RichTextEditor;
