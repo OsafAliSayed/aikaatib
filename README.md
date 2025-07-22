@@ -2,6 +2,9 @@
 
 AI Kaatib is a generative AI that lets you write SEO friendly, optimized articles for you blogs. 
 
+<img width="1757" height="924" alt="image" src="https://github.com/user-attachments/assets/ce194d45-7c8b-4798-aeac-670f8bcb87b9" />
+
+
 # Features
 
 - Generate SEO friendly articles
