@@ -9,8 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
-import os
-from openai import OpenAI
+
+from articles.clients import openai_client
 
 from users.serializers import UserSerializer
 
@@ -111,48 +111,47 @@ class GenerateArticleView(APIView):
     def post(self, request):
         # Validate input data using serializer
         serializer = GenerateArticleSerializer(data=request.data)
-        if serializer.is_valid():
-            validated_data = serializer.validated_data
-            title = validated_data['title']
-            keywords = validated_data.get('keywords', '')
-            outline = validated_data.get('outline', '')
-            target_audience = validated_data.get('target_audience', '')
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            keywords_str = ", ".join(keywords)
-            # Generate content using ChatGPT API
-            prompt = article_generation_prompt.format(title, keywords_str, outline, target_audience)
-            
-            # make OpenAI Client
-            openai = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-            response = openai.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {"role": "system", "content": "You are an expert SEO content writer. Your task is to generate a well-structured, engaging, and SEO-friendly blog post in Markdown format."},
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=2500
-            )
-            content = response.choices[0].message.content.strip()
+        validated_data = serializer.validated_data
+        title = validated_data['title']
+        keywords = validated_data.get('keywords', '')
+        outline = validated_data.get('outline', '')
+        target_audience = validated_data.get('target_audience', '')
 
-            # get user obj to get user id
-            user_obj = UserSerializer(request.user).data
-            
-            # upload the article to supabase
-            content_url = upload_markdown(title, user_obj['id'], content)
-            
-            # Save the article to the database
-            article = Article.objects.create(
-                user=request.user,
-                title=title,
-                keywords=keywords,
-                outline=outline,
-                target_audience=target_audience,
-                content_url=content_url,
-                content_url_expiration=timezone.now() + timedelta(seconds=3600)
-            )
-
-            # Return the created article data
-            article_serializer = ArticleSerializer(article)
-            return Response(article_serializer.data, status=status.HTTP_201_CREATED)
+        keywords_str = ", ".join(keywords)
+        # Generate content using ChatGPT API
+        prompt = article_generation_prompt.format(title, keywords_str, outline, target_audience)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Use shared OpenAI client
+        response = openai_client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an expert SEO content writer. Your task is to generate a well-structured, engaging, and SEO-friendly blog post in Markdown format."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=2500
+        )
+        content = response.choices[0].message.content.strip()
+
+        # get user obj to get user id
+        user_obj = UserSerializer(request.user).data
+        
+        # upload the article to supabase
+        content_url = upload_markdown(title, user_obj['id'], content)
+        
+        # Save the article to the database
+        article = Article.objects.create(
+            user=request.user,
+            title=title,
+            keywords=keywords,
+            outline=outline,
+            target_audience=target_audience,
+            content_url=content_url,
+            content_url_expiration=timezone.now() + timedelta(seconds=3600)
+        )
+
+        # Return the created article data
+        article_serializer = ArticleSerializer(article)
+        return Response(article_serializer.data, status=status.HTTP_201_CREATED)
